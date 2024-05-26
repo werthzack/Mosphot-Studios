@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://jwbo55ywa6qq"]
 
 [ext_resource type="PackedScene" uid="uid://b8j8cg0m82uj8" path="res://Scenes & Scripts/Player/player.tscn" id="1_tqa7b"]
-[ext_resource type="Script" path="res://Scenes & Scripts/Player/Camera3D.gd" id="2_h1ex7"]
+[ext_resource type="Script" path="res://Scenes & Scripts/Main/Camera.gd" id="2_tja7o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hyn3w"]
 sky_top_color = Color(0.176471, 0.654902, 0.34902, 1)
@@ -50,10 +50,10 @@ shape = SubResource("BoxShape3D_1c864")
 [node name="Player" parent="." instance=ExtResource("1_tqa7b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 10, 20)
 current = true
-script = ExtResource("2_h1ex7")
+script = ExtResource("2_tja7o")
 
 [node name="Obstacles" type="Node3D" parent="."]
 
