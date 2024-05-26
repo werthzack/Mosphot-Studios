@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8j8cg0m82uj8"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/Player/player.gd" id="1_gdlpr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mep8"]
+albedo_color = Color(0, 0.8, 1.3, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eerbp"]
+material = SubResource("StandardMaterial3D_7mep8")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6ucl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icbmx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i8kpr"]
+material = SubResource("StandardMaterial3D_icbmx")
+size = Vector3(0.7, 0.2, 0.3)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_gdlpr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_eerbp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_d6ucl")
+
+[node name="Eyes" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.593883, -0.520883)
+mesh = SubResource("BoxMesh_i8kpr")

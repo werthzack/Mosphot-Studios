@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://jwbo55ywa6qq"]
+
+[ext_resource type="PackedScene" uid="uid://b8j8cg0m82uj8" path="res://Scenes & Scripts/Player/player.tscn" id="1_tqa7b"]
+[ext_resource type="Script" path="res://Scenes & Scripts/Player/Camera3D.gd" id="2_h1ex7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hyn3w"]
+sky_top_color = Color(0.176471, 0.654902, 0.34902, 1)
+sky_horizon_color = Color(0.0429397, 0.226747, 0.107488, 1)
+sky_curve = 0.409812
+ground_bottom_color = Color(0.309804, 0.376471, 0.298039, 1)
+ground_horizon_color = Color(0.0429397, 0.226747, 0.107488, 1)
+ground_curve = 0.298571
+
+[sub_resource type="Sky" id="Sky_a3d0s"]
+sky_material = SubResource("ProceduralSkyMaterial_hyn3w")
+
+[sub_resource type="Environment" id="Environment_frf42"]
+background_mode = 2
+sky = SubResource("Sky_a3d0s")
+ambient_light_energy = 0.0
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4m63h"]
+albedo_color = Color(0.188235, 0.0941176, 0.117647, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_h87h0"]
+material = SubResource("StandardMaterial3D_4m63h")
+size = Vector3(40, 0.1, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1c864"]
+size = Vector3(40, 0.1, 40)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_frf42")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_h87h0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_1c864")
+
+[node name="Player" parent="." instance=ExtResource("1_tqa7b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 10, 20)
+current = true
+script = ExtResource("2_h1ex7")
