@@ -19,6 +19,7 @@ size = Vector3(0.7, 0.2, 0.3)
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_gdlpr")
+speed = 10
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_eerbp")

@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 @export_group("Controller")
-@export var speed: int = 6
+@export var speed: int = 10
 @export var allow_jump: bool = true
 @export var jump_gravity: int = 70
 @export var fall_gravity: int = 90

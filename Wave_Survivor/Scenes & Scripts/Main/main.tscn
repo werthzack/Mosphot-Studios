@@ -54,3 +54,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 10, 20)
 current = true
 script = ExtResource("2_h1ex7")
+
+[node name="Obstacles" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 1, -5)
+use_collision = true
+size = Vector3(4, 3, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 14, 1.5, -9)
+use_collision = true
+size = Vector3(3, 4, 7)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(0.258819, 0.683013, 0.683013, 0, 0.707107, -0.707107, -0.965926, 0.183013, 0.183013, 14, 2.23223, 7.23223)
+use_collision = true
+size = Vector3(3, 10, 3)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 14, 0.93934, 13.9393)
+use_collision = true
+size = Vector3(3, 12, 3)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Obstacles"]
+transform = Transform3D(-0.707107, -0.353553, -0.612372, -0.707107, 0.353553, 0.612372, 0, 0.866025, -0.5, -10.0849, 1.43934, 11.2204)
+use_collision = true
+size = Vector3(3, 5, 8)
