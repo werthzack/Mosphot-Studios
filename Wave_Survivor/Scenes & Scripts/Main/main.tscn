@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://jwbo55ywa6qq"]
+[gd_scene load_steps=10 format=3 uid="uid://jwbo55ywa6qq"]
 
 [ext_resource type="PackedScene" uid="uid://b8j8cg0m82uj8" path="res://Scenes & Scripts/Player/player.tscn" id="1_tqa7b"]
-[ext_resource type="Script" path="res://Scenes & Scripts/Main/Camera.gd" id="2_tja7o"]
+[ext_resource type="Script" path="res://Scenes & Scripts/Main/main.gd" id="1_ws3q8"]
+[ext_resource type="PackedScene" uid="uid://b8of6uiqu2gae" path="res://Scenes & Scripts/Gate/gate.tscn" id="2_xoj4j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hyn3w"]
 sky_top_color = Color(0.176471, 0.654902, 0.34902, 1)
@@ -31,6 +32,8 @@ size = Vector3(40, 0.1, 40)
 size = Vector3(40, 0.1, 40)
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_ws3q8")
+gate_scene = ExtResource("2_xoj4j")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_frf42")
@@ -47,37 +50,140 @@ mesh = SubResource("BoxMesh_h87h0")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 shape = SubResource("BoxShape3D_1c864")
 
-[node name="Player" parent="." instance=ExtResource("1_tqa7b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 10, 20)
-current = true
-script = ExtResource("2_tja7o")
-
 [node name="Obstacles" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 1, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.88635, 1, -3.60323)
 use_collision = true
 size = Vector3(4, 3, 1)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 14, 1.5, -9)
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.576267, 1.5, -6.8047)
 use_collision = true
 size = Vector3(3, 4, 7)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(0.258819, 0.683013, 0.683013, 0, 0.707107, -0.707107, -0.965926, 0.183013, 0.183013, 14, 2.23223, 7.23223)
+transform = Transform3D(-4.37114e-08, 0.866026, 0.5, 0, 0.5, -0.866026, -1, -3.78552e-08, -2.18557e-08, 3.55554, 1.59922, 2.29)
 use_collision = true
-size = Vector3(3, 10, 3)
+size = Vector3(3, 15.9219, 3)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 14, 0.93934, 13.9393)
+transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 8.11368, 0.183037, 8.91496)
 use_collision = true
 size = Vector3(3, 12, 3)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(-0.707107, -0.353553, -0.612372, -0.707107, 0.353553, 0.612372, 0, 0.866025, -0.5, -10.0849, 1.43934, 11.2204)
+transform = Transform3D(-0.433013, -0.25, -0.866025, 0.75, 0.433012, -0.5, 0.5, -0.866025, -3.78552e-08, -2.45574, 1.43934, 11.2204)
 use_collision = true
 size = Vector3(3, 5, 8)
+
+[node name="Player" parent="." instance=ExtResource("1_tqa7b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." groups=["Camera"]]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 15, 15, 15)
+top_level = true
+projection = 1
+current = true
+size = 30.0
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="WaveTimer" type="Timer" parent="Timers"]
+wait_time = 60.0
+one_shot = true
+
+[node name="RestTimer" type="Timer" parent="Timers"]
+wait_time = 60.0
+one_shot = true
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MapUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimeLabel" type="Label" parent="UI/MapUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.356
+anchor_top = 0.025
+anchor_right = 0.645
+anchor_bottom = 0.094
+offset_left = -0.112
+offset_top = -0.200001
+offset_right = -0.0400391
+offset_bottom = 0.0879974
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "Wave Starts in: 30 sec"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkipButton" type="Button" parent="UI/MapUI"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.836
+anchor_top = 0.037
+anchor_right = 0.889
+anchor_bottom = 0.103
+offset_left = -0.0720215
+offset_top = 0.0240002
+offset_right = -0.128052
+offset_bottom = 0.255997
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 25
+text = "SKIP"
+
+[node name="GateSpawns" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 2, 0)
+
+[node name="Marker3D6" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 2, 10)
+
+[node name="Marker3D7" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2, 17)
+
+[node name="Marker3D8" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 17)
+
+[node name="Marker3D9" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 17)
+
+[node name="Marker3D10" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18, 2, 0)
+
+[node name="Marker3D11" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18, 2, 9)
+
+[node name="Marker3D12" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18, 2, -10)
+
+[node name="Marker3D13" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18, 2, -10)
+
+[node name="Marker3D2" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 2, -12)
+
+[node name="Marker3D3" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 11, 2, -18)
+
+[node name="Marker3D5" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -10, 2, -18)
+
+[node name="Marker3D4" type="Marker3D" parent="GateSpawns"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, -18)
+
+[node name="GateContainer" type="Node3D" parent="."]
+
+[connection signal="timeout" from="Timers/WaveTimer" to="." method="_on_wave_timer_timeout"]
+[connection signal="timeout" from="Timers/RestTimer" to="." method="_on_rest_timer_timeout"]
+[connection signal="button_down" from="UI/MapUI/SkipButton" to="." method="_on_skip_button_button_down"]
