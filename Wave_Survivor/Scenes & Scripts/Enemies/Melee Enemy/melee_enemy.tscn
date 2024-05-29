@@ -1,0 +1,133 @@
+[gd_scene load_steps=14 format=3 uid="uid://bwnxrkrmwn8y"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/Enemies/Melee Enemy/melee_enemy.gd" id="1_c2itq"]
+[ext_resource type="PackedScene" uid="uid://bgcdtv8qfuiub" path="res://Scenes & Scripts/UI/enemy_health_bar.tscn" id="2_ev81o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wg433"]
+albedo_color = Color(0.254902, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yq5g5"]
+material = SubResource("StandardMaterial3D_wg433")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtwc0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qe07n"]
+albedo_color = Color(1, 0.419608, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_v04sb"]
+material = SubResource("StandardMaterial3D_qe07n")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kcrtu"]
+albedo_color = Color(1, 0.415686, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o3b4i"]
+material = SubResource("StandardMaterial3D_kcrtu")
+top_radius = 0.1
+bottom_radius = 0.05
+height = 1.2
+
+[sub_resource type="Animation" id="Animation_f7rjt"]
+resource_name = "Attack"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -2.0944, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_02w7h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sifwj"]
+_data = {
+"Attack": SubResource("Animation_f7rjt"),
+"RESET": SubResource("Animation_02w7h")
+}
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_634ie"]
+viewport_path = NodePath("SubViewport")
+
+[node name="MeleeEnemy" type="CharacterBody3D" groups=["Enemies"]]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_c2itq")
+damage = 20
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_yq5g5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wtwc0")
+
+[node name="Eyes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5)
+
+[node name="Eye2" type="MeshInstance3D" parent="Eyes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
+mesh = SubResource("SphereMesh_v04sb")
+skeleton = NodePath("../..")
+
+[node name="Eye1" type="MeshInstance3D" parent="Eyes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0)
+mesh = SubResource("SphereMesh_v04sb")
+skeleton = NodePath("../..")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="ReactionTime" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+
+[node name="Hand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.368784, 0.200571, -0.315445)
+
+[node name="Weapon" type="MeshInstance3D" parent="Hand"]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 0, -0.6)
+mesh = SubResource("CylinderMesh_o3b4i")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sifwj")
+}
+playback_default_blend_time = 0.2
+
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 0.4
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(250, 250)
+
+[node name="EnemyHealthBar" parent="SubViewport" instance=ExtResource("2_ev81o")]
+
+[node name="HealthBarSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2574, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_634ie")
+
+[connection signal="timeout" from="ReactionTime" to="." method="_on_reaction_time_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="HurtTimer" to="." method="_on_hurt_timer_timeout"]

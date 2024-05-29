@@ -1,15 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://jwbo55ywa6qq"]
+[gd_scene load_steps=14 format=3 uid="uid://jwbo55ywa6qq"]
 
 [ext_resource type="PackedScene" uid="uid://b8j8cg0m82uj8" path="res://Scenes & Scripts/Player/player.tscn" id="1_tqa7b"]
 [ext_resource type="Script" path="res://Scenes & Scripts/Main/main.gd" id="1_ws3q8"]
+[ext_resource type="PackedScene" uid="uid://bwnxrkrmwn8y" path="res://Scenes & Scripts/Enemies/Melee Enemy/melee_enemy.tscn" id="2_1ldxh"]
 [ext_resource type="PackedScene" uid="uid://b8of6uiqu2gae" path="res://Scenes & Scripts/Gate/gate.tscn" id="2_xoj4j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hyn3w"]
-sky_top_color = Color(0.176471, 0.654902, 0.34902, 1)
-sky_horizon_color = Color(0.0429397, 0.226747, 0.107488, 1)
+sky_top_color = Color(0.6319, 0.668946, 0.607463, 1)
+sky_horizon_color = Color(0.276273, 0.302469, 0.258754, 1)
 sky_curve = 0.409812
-ground_bottom_color = Color(0.309804, 0.376471, 0.298039, 1)
-ground_horizon_color = Color(0.0429397, 0.226747, 0.107488, 1)
+ground_bottom_color = Color(0.113725, 0.12549, 0.0823529, 1)
+ground_horizon_color = Color(0.276273, 0.302469, 0.258754, 1)
 ground_curve = 0.298571
 
 [sub_resource type="Sky" id="Sky_a3d0s"]
@@ -18,21 +19,37 @@ sky_material = SubResource("ProceduralSkyMaterial_hyn3w")
 [sub_resource type="Environment" id="Environment_frf42"]
 background_mode = 2
 sky = SubResource("Sky_a3d0s")
-ambient_light_energy = 0.0
+ambient_light_sky_contribution = 0.7
 tonemap_mode = 2
+fog_light_color = Color(0.541176, 0.529412, 0.572549, 1)
+fog_light_energy = 0.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2xmpf"]
+bg_color = Color(0, 0, 0, 0.27451)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_v0h3m"]
+vertices = PackedVector3Array(-19, 0.25, -19, -19, 0.25, 19, 19, 0.25, 19, 19, 0.25, -19)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+cell_height = 0.1
+agent_radius = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4m63h"]
-albedo_color = Color(0.188235, 0.0941176, 0.117647, 1)
+albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_h87h0"]
 material = SubResource("StandardMaterial3D_4m63h")
 size = Vector3(40, 0.1, 40)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1c864"]
-size = Vector3(40, 0.1, 40)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_25gj8"]
+data = PackedVector3Array(-20, 0.05, 20, 20, 0.05, 20, -20, -0.05, 20, 20, 0.05, 20, 20, -0.05, 20, -20, -0.05, 20, 20, 0.05, -20, -20, 0.05, -20, 20, -0.05, -20, -20, 0.05, -20, -20, -0.05, -20, 20, -0.05, -20, 20, 0.05, 20, 20, 0.05, -20, 20, -0.05, 20, 20, 0.05, -20, 20, -0.05, -20, 20, -0.05, 20, -20, 0.05, -20, -20, 0.05, 20, -20, -0.05, -20, -20, 0.05, 20, -20, -0.05, 20, -20, -0.05, -20, 20, 0.05, 20, -20, 0.05, 20, 20, 0.05, -20, -20, 0.05, 20, -20, 0.05, -20, 20, 0.05, -20, -20, -0.05, 20, 20, -0.05, 20, -20, -0.05, -20, 20, -0.05, 20, 20, -0.05, -20, -20, -0.05, -20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eenas"]
+albedo_color = Color(0.231373, 0.2, 0.152941, 1)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_ws3q8")
+melee_scene = ExtResource("2_1ldxh")
+num_melee = 2
 gate_scene = ExtResource("2_xoj4j")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -42,56 +59,18 @@ environment = SubResource("Environment_frf42")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Floor" type="StaticBody3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-mesh = SubResource("BoxMesh_h87h0")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-shape = SubResource("BoxShape3D_1c864")
-
-[node name="Obstacles" type="Node3D" parent="."]
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.88635, 1, -3.60323)
-use_collision = true
-size = Vector3(4, 3, 1)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.576267, 1.5, -6.8047)
-use_collision = true
-size = Vector3(3, 4, 7)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(-4.37114e-08, 0.866026, 0.5, 0, 0.5, -0.866026, -1, -3.78552e-08, -2.18557e-08, 3.55554, 1.59922, 2.29)
-use_collision = true
-size = Vector3(3, 15.9219, 3)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 8.11368, 0.183037, 8.91496)
-use_collision = true
-size = Vector3(3, 12, 3)
-
-[node name="CSGBox3D5" type="CSGBox3D" parent="Obstacles"]
-transform = Transform3D(-0.433013, -0.25, -0.866025, 0.75, 0.433012, -0.5, 0.5, -0.866025, -3.78552e-08, -2.45574, 1.43934, 11.2204)
-use_collision = true
-size = Vector3(3, 5, 8)
-
 [node name="Player" parent="." instance=ExtResource("1_tqa7b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." groups=["Camera"]]
-transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 15, 15, 15)
+transform = Transform3D(0.707107, -0.353553, 0.612373, 0, 0.866026, 0.5, -0.707107, -0.353553, 0.612373, 15, 15, 15)
 top_level = true
+doppler_tracking = 1
 projection = 1
 current = true
-size = 30.0
+size = 23.0
 
 [node name="Timers" type="Node" parent="."]
-
-[node name="WaveTimer" type="Timer" parent="Timers"]
-wait_time = 60.0
-one_shot = true
 
 [node name="RestTimer" type="Timer" parent="Timers"]
 wait_time = 60.0
@@ -141,6 +120,47 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 25
 text = "SKIP"
 
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Menu" type="Control" parent="PauseMenu"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PauseMenu/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2xmpf")
+
+[node name="PauseLabel" type="Label" parent="PauseMenu/Menu/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.399
+anchor_top = 0.436
+anchor_right = 0.601
+anchor_bottom = 0.564
+offset_left = 96.352
+offset_top = 29.972
+offset_right = -96.352
+offset_bottom = -29.972
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 60
+text = "PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="GateSpawns" type="Node3D" parent="."]
 
 [node name="Marker3D" type="Marker3D" parent="GateSpawns"]
@@ -184,6 +204,65 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2, 
 
 [node name="GateContainer" type="Node3D" parent="."]
 
-[connection signal="timeout" from="Timers/WaveTimer" to="." method="_on_wave_timer_timeout"]
+[node name="Enemies" type="Node3D" parent="." groups=["EnemyContainer"]]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_v0h3m")
+
+[node name="Floor" type="MeshInstance3D" parent="NavigationRegion3D"]
+mesh = SubResource("BoxMesh_h87h0")
+skeleton = NodePath(".")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
+collision_layer = 2
+collision_mask = 15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_25gj8")
+
+[node name="Obstacles" type="Node3D" parent="NavigationRegion3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.88635, 1, -3.60323)
+use_collision = true
+collision_layer = 2
+collision_mask = 15
+size = Vector3(4, 3, 1)
+material = SubResource("StandardMaterial3D_eenas")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.576267, 1.5, -6.8047)
+use_collision = true
+collision_layer = 2
+collision_mask = 15
+size = Vector3(3, 4, 7)
+material = SubResource("StandardMaterial3D_eenas")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/Obstacles"]
+transform = Transform3D(-4.37114e-08, 0.866026, 0.5, 0, 0.5, -0.866026, -1, -3.78552e-08, -2.18557e-08, 3.55554, 1.59922, 2.29)
+use_collision = true
+collision_layer = 2
+collision_mask = 15
+size = Vector3(3, 15.9219, 3)
+material = SubResource("StandardMaterial3D_eenas")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Obstacles"]
+transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 8.11368, 0.183037, 8.91496)
+use_collision = true
+collision_layer = 2
+collision_mask = 15
+size = Vector3(3, 12, 3)
+material = SubResource("StandardMaterial3D_eenas")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D/Obstacles"]
+transform = Transform3D(-0.433013, -0.25, -0.866025, 0.75, 0.433012, -0.5, 0.5, -0.866025, -3.78552e-08, -2.45574, 1.43934, 11.2204)
+use_collision = true
+collision_layer = 2
+collision_mask = 15
+size = Vector3(3, 5, 8)
+material = SubResource("StandardMaterial3D_eenas")
+
+[node name="BulletContainer" type="Node3D" parent="."]
+
 [connection signal="timeout" from="Timers/RestTimer" to="." method="_on_rest_timer_timeout"]
 [connection signal="button_down" from="UI/MapUI/SkipButton" to="." method="_on_skip_button_button_down"]

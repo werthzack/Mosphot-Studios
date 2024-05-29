@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0c1j7dsdnj43"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/UI/gate_health_bar.gd" id="1_dl3ji"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4p48"]
+bg_color = Color(0, 0.027451, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a183o"]
+bg_color = Color(1, 0, 0, 1)
+
+[node name="GateHealthBar" type="ProgressBar"]
+anchors_preset = -1
+anchor_left = 0.181
+anchor_top = 0.46
+anchor_right = 0.819
+anchor_bottom = 0.542
+offset_left = -0.512009
+offset_top = -0.0800171
+offset_right = 0.511902
+offset_bottom = -0.216034
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_e4p48")
+theme_override_styles/fill = SubResource("StyleBoxFlat_a183o")
+max_value = 30.0
+step = 1.0
+value = 15.0
+show_percentage = false
+script = ExtResource("1_dl3ji")

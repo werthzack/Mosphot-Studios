@@ -1,19 +1,77 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8of6uiqu2gae"]
+[gd_scene load_steps=12 format=3 uid="uid://b8of6uiqu2gae"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wqwxk"]
+[ext_resource type="Script" path="res://Scenes & Scripts/Gate/gate.gd" id="1_lmlkm"]
+[ext_resource type="PackedScene" uid="uid://bwnxrkrmwn8y" path="res://Scenes & Scripts/Enemies/Melee Enemy/melee_enemy.tscn" id="2_iljh4"]
+[ext_resource type="PackedScene" uid="uid://d0c1j7dsdnj43" path="res://Scenes & Scripts/UI/gate_health_bar.tscn" id="3_mom0j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n52gf"]
+shading_mode = 0
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_chsw6"]
-material = SubResource("StandardMaterial3D_wqwxk")
-size = Vector3(2, 4, 1)
+[sub_resource type="SphereMesh" id="SphereMesh_bitas"]
+material = SubResource("StandardMaterial3D_n52gf")
+radius = 1.0
+height = 4.0
+radial_segments = 16
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_v8hq5"]
-size = Vector3(2, 4, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cydbg"]
+albedo_color = Color(1, 0, 0, 1)
 
-[node name="Gate" type="StaticBody3D"]
+[sub_resource type="SphereMesh" id="SphereMesh_ttw6s"]
+material = SubResource("StandardMaterial3D_cydbg")
+radius = 0.9
+height = 3.9
+radial_segments = 32
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_chsw6")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynfd6"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0.243137, 0.443137)
+
+[sub_resource type="SphereMesh" id="SphereMesh_eha60"]
+material = SubResource("StandardMaterial3D_ynfd6")
+radius = 0.9
+height = 3.9
+radial_segments = 32
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w1tjy"]
+radius = 1.0
+height = 4.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_o6kxd"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Gate" type="StaticBody3D" groups=["Gates"]]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("1_lmlkm")
+melee_scene = ExtResource("2_iljh4")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_bitas")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="CSGMesh3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 0, 0)
+operation = 2
+mesh = SubResource("SphereMesh_ttw6s")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="CSGMesh3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("SphereMesh_eha60")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_v8hq5")
+shape = SubResource("CapsuleShape3D_w1tjy")
+disabled = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(300, 300)
+
+[node name="GateHealthBar" parent="SubViewport" instance=ExtResource("3_mom0j")]
+value = 30.0
+
+[node name="HealthBarSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_o6kxd")

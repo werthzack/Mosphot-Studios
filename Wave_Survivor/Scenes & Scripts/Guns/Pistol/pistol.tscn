@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://do68f87mwaqk3"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/Guns/Pistol/pistol.gd" id="1_bre5f"]
+[ext_resource type="PackedScene" uid="uid://qbs7b6ia7acp" path="res://Scenes & Scripts/Guns/Pistol/pistol_bullet.tscn" id="2_lmbxk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esuoj"]
+albedo_color = Color(1, 0.27451, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_c42gr"]
+material = SubResource("StandardMaterial3D_esuoj")
+size = Vector3(0.15, 0.15, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ye2yi"]
+albedo_color = Color(1, 0.27451, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lexxi"]
+material = SubResource("StandardMaterial3D_ye2yi")
+size = Vector3(0.1, 0.15, 0.3)
+
+[node name="Pistol" type="Node3D"]
+script = ExtResource("1_bre5f")
+bullet_scene = ExtResource("2_lmbxk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35)
+mesh = SubResource("BoxMesh_c42gr")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, 0, -0.208505, -0.0638521)
+mesh = SubResource("BoxMesh_lexxi")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="BulletSpawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
