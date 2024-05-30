@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://b8j8cg0m82uj8"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/Player/player.gd" id="1_gdlpr"]
+[ext_resource type="PackedScene" uid="uid://xv2xfp5xelhi" path="res://Scenes & Scripts/UI/player_health_bar.tscn" id="2_pulli"]
+[ext_resource type="PackedScene" uid="uid://do68f87mwaqk3" path="res://Scenes & Scripts/Guns/Pistol/pistol.tscn" id="3_dm3s4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mep8"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eerbp"]
+material = SubResource("StandardMaterial3D_7mep8")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6ucl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icbmx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i8kpr"]
+material = SubResource("StandardMaterial3D_icbmx")
+size = Vector3(0.7, 0.2, 0.3)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_woq7e"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+collision_mask = 7
+script = ExtResource("1_gdlpr")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_eerbp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_d6ucl")
+
+[node name="Eyes" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.593883, -0.520883)
+mesh = SubResource("BoxMesh_i8kpr")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(400, 300)
+
+[node name="PlayerHealthBar" parent="SubViewport" instance=ExtResource("2_pulli")]
+
+[node name="HealthBarSprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52963, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_woq7e")
+
+[node name="Pistol" parent="." instance=ExtResource("3_dm3s4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.25, -0.45)

@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://xv2xfp5xelhi"]
+
+[ext_resource type="Script" path="res://Scenes & Scripts/UI/player_health_bar.gd" id="1_wg2a0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs0tp"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tgrh5"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="PlayerHealthBar" type="ProgressBar"]
+anchors_preset = -1
+anchor_left = 0.264
+anchor_top = 0.466
+anchor_right = 0.75
+anchor_bottom = 0.535
+offset_left = -16.128
+offset_top = 0.0319824
+offset_right = -6.10352e-05
+offset_bottom = 0.319977
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_styles/background = SubResource("StyleBoxFlat_xs0tp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tgrh5")
+step = 1.0
+value = 50.0
+show_percentage = false
+script = ExtResource("1_wg2a0")
