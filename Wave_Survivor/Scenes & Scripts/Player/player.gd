@@ -9,7 +9,7 @@ signal health_changed()
 #Change/Increase this variable when you have to change/upgrade max_health in game
 @export var max_health: int = 100
 
-@export var speed: int = 10
+@export var speed: float = 10.0
 @export var allow_jump: bool = true
 @export var jump_gravity: int = 70
 @export var fall_gravity: int = 90
@@ -19,6 +19,9 @@ signal health_changed()
 @onready var camera = get_tree().get_nodes_in_group("Camera")[0]
 
 var direction
+
+var sprint_speed = 1.5
+
 
 var current_health:int = 100:
 	set(value):
@@ -46,7 +49,15 @@ func _process(delta):
 	
 	#Only apply movemen and look_at func when player is playing
 	if Globals.playing:
-		
+		if Input.is_action_just_pressed("CTRL"):
+			sprint()
+			print(speed)
+		else:
+			if Input.is_action_just_released("CTRL"):
+				speed /= sprint_speed
+				print(speed)
+				
+	
 		Globals.player_pos = global_position #Updating player position so enemies can access it
 		
 		look_at_mouse(delta)
@@ -77,7 +88,11 @@ func apply_gravity(delta):
 	else: # If trying to jump on floor and jump is allowed in editor
 		if Input.is_action_just_pressed("jump") and allow_jump:
 			velocity.y = jump_velocity
-
+			
+#Adds a sprint function
+func sprint():
+	speed *= sprint_speed
+	
 func get_direction():
 	#Resetting direction every frame
 	direction = Vector3.ZERO
@@ -135,7 +150,7 @@ func die():
 	tween.tween_property(self, "rotation_degrees", Vector3(rotation_degrees.x+90, rotation_degrees.y, rotation_degrees.z), 0.2)
 
 #This function is for when the player walks off the map, instead of falling, it puts them back at (0,6,0)
-func _on_kill_box_body_entered(body):
+func _on_kill_box_body_entered(_body):
 	position.x = 0
 	position.y = 6
 	position.z = 0
