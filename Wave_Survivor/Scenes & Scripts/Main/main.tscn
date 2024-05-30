@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://jwbo55ywa6qq"]
+[gd_scene load_steps=15 format=3 uid="uid://jwbo55ywa6qq"]
 
 [ext_resource type="PackedScene" uid="uid://b8j8cg0m82uj8" path="res://Scenes & Scripts/Player/player.tscn" id="1_tqa7b"]
 [ext_resource type="Script" path="res://Scenes & Scripts/Main/main.gd" id="1_ws3q8"]
@@ -46,6 +46,8 @@ data = PackedVector3Array(-20, 0.05, 20, 20, 0.05, 20, -20, -0.05, 20, 20, 0.05,
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eenas"]
 albedo_color = Color(0.231373, 0.2, 0.152941, 1)
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_qvsas"]
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_ws3q8")
 melee_scene = ExtResource("2_1ldxh")
@@ -69,6 +71,12 @@ doppler_tracking = 1
 projection = 1
 current = true
 size = 23.0
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.7079, 20.5866, -10.5144)
+light_color = Color(0.202108, 0.0510338, 0.855476, 1)
+light_energy = 15.476
+sky_mode = 1
 
 [node name="Timers" type="Node" parent="."]
 
@@ -264,5 +272,13 @@ material = SubResource("StandardMaterial3D_eenas")
 
 [node name="BulletContainer" type="Node3D" parent="."]
 
+[node name="KillBox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3348, -3.11537, 2.14371)
+
+[node name="KillBoxCollision" type="CollisionShape3D" parent="KillBox"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -2.61049, -1.77984, 0)
+shape = SubResource("WorldBoundaryShape3D_qvsas")
+
 [connection signal="timeout" from="Timers/RestTimer" to="." method="_on_rest_timer_timeout"]
 [connection signal="button_down" from="UI/MapUI/SkipButton" to="." method="_on_skip_button_button_down"]
+[connection signal="body_entered" from="KillBox" to="Player" method="_on_kill_box_body_entered"]

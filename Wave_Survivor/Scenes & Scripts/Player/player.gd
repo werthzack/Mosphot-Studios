@@ -37,7 +37,11 @@ var look_dir = Vector3(0, 1, -1)
 
 var mouse_pos_2d
 var mouse_pos_3d
-
+func _ready():
+	#Puts the player in a certain spot when play is pressed
+	position.x = 0
+	position.y = 6
+	position.z = 0
 func _process(delta):
 	
 	#Only apply movemen and look_at func when player is playing
@@ -129,3 +133,9 @@ func die():
 	var tween = owner.create_tween()
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(self, "rotation_degrees", Vector3(rotation_degrees.x+90, rotation_degrees.y, rotation_degrees.z), 0.2)
+
+#This function is for when the player walks off the map, instead of falling, it puts them back at (0,6,0)
+func _on_kill_box_body_entered(body):
+	position.x = 0
+	position.y = 6
+	position.z = 0
